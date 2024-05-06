@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -9,10 +10,10 @@ Player::Player(Texture* texture, Vector2u imageCount, float switchTime, float sp
 	row = 0;
 	faceRight = true;
 
-	body.setSize(Vector2f(100.0f, 150.0f));
+	body.setSize(Vector2f(50.0f, 50.0f));
 	
 	body.setOrigin(body.getSize() / 2.0f);
-	body.setPosition(-250.0f, -250.0f);
+	body.setPosition(96.0f, 96.0f);
 	
 	body.setTexture(texture);
 }

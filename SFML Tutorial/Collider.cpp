@@ -58,8 +58,8 @@ bool Collider::CheckCollision(const Collider& other, float push) const
             }
         }
 
-        return false;
+        return true;
     }
 
-    return false; 
+    return false;
 }

@@ -9,7 +9,7 @@ public:
 	Platform(Texture* texture, Vector2f size, Vector2f position);
 	~Platform();
 
-	void Draw(RenderWindow& window);
+	void Draw(RenderWindow& window) const;
 	Collider GetCollider() 
 	{
 		return Collider(body);

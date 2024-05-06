@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Platform.h"
 #include "Map.h"
+#include "gameTile.h"
+#include "gameWorld.h"
 
 using namespace std;
 using namespace sf;
@@ -18,21 +20,19 @@ void ResizeView(const RenderWindow& window, View& view)
 
 int main()
 {
-    RenderWindow window(VideoMode(1024, 1024), "SFML Tutorial", Style::Close | Style::Resize);
+    RenderWindow window(VideoMode(1600, 1024), "SFML Tutorial", Style::Close | Style::Resize);
     View view(Vector2f(0.0f, 0.0f), Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     
     Texture playerTexture;
-    playerTexture.loadFromFile("green_alien.png");
+    playerTexture.loadFromFile("images/green_alien.png");
 
-    Texture wallTexture;
-    wallTexture.loadFromFile("wall.jpg");
-    
 
-    Player player (&playerTexture, Vector2u(11,1), 0.3f, 100.0f);
+    Player player (&playerTexture, Vector2u(11,1), 0.3f, 200.0f);
 
     
+    GameWorld gameWorld = GameWorld();
 
-    Platform platform2(&wallTexture, Vector2f(400.0f, 200.0f), Vector2f(500.0f, 0.0f));
+    Platform platform1(nullptr, Vector2f(64.0f, 64.0f), Vector2f(500.0f, 200.0f));
 
     
 
@@ -44,17 +44,17 @@ int main()
     player.setTextureRect(IntRect(textureSize.x * 0, 0, textureSize.x, textureSize.y));
     */
 
-    Map map1(&wallTexture, Vector2f(0.0f, 0.0f));
+    
 
     float deltaTime = 0.0f;
     Clock clock;
 
-    while (window.isOpen()) 
+    while (window.isOpen())
     {
         deltaTime = clock.restart().asSeconds();
 
         Event evnt;
-        
+
         while (window.pollEvent(evnt))
         {
             switch (evnt.type)
@@ -68,21 +68,27 @@ int main()
             }
         }
 
-        
+
         player.Update(deltaTime);
 
-        
-        platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 
-        
+        window.clear(Color(150, 150, 150));
 
-        window.clear(Color(150,150,150));
-        window.setView(view);
+        int i, j;
+        for (i = 0; i < gameWorld.gridHeight; i++) {
+            for (j = 0; j < gameWorld.gridLength; j++) {
+                if (!gameWorld.tiles[i][j]->isPassable) {
+
+                    gameWorld.tiles[i][j]->GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+                }
+
+                window.draw(gameWorld.tiles[i][j]->sprite);
+            }
+        }
+
         player.Draw(window);
-        
-        platform2.Draw(window);
         window.display();
     }
-
+    
     return 0;
 }
