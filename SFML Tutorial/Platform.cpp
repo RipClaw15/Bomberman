@@ -1,6 +1,6 @@
 #include "Platform.h"
 
-void Platform::Draw(RenderWindow& window) const
+void Platform::Draw(RenderWindow& window)
 {
 	window.draw(body);
 }

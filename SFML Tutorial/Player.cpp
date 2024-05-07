@@ -12,7 +12,7 @@ Player::Player(Texture* texture, Vector2u imageCount, float switchTime, float sp
 
 	body.setSize(Vector2f(50.0f, 50.0f));
 	
-	body.setOrigin(body.getSize() / 2.0f);
+	
 	body.setPosition(96.0f, 96.0f);
 	
 	body.setTexture(texture);

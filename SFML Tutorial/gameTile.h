@@ -10,15 +10,16 @@ using namespace std;
 
 class GameTile {
 public:
-	bool isPassable;
-	bool isExit;
-	Vector2f pos;
+
+	GameTile(string, float, float, Vector2f pos, bool);
+	~GameTile();
 	Texture texture;
 	Sprite sprite;
-	GameTile(string, float, float, bool, bool);
+	
+	bool isPassable;
 	bool setUpSprite(string);
-	Collider GetCollider()
-	{
+	Vector2f pos;
+	Collider GetCollider()	{
 		return Collider(body);
 	}
 

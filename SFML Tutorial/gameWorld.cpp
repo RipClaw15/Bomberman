@@ -37,6 +37,8 @@ void GameWorld::setUpEnemyPositions() {
 
 void GameWorld::setUpTiles() {
     // Loop to create tiles
+    Texture brick,wall,empty;
+
     for (int i = 0; i < gridHeight; ++i) {
         for (int j = 0; j < gridLength; ++j) {
             string imagePath;
@@ -57,13 +59,9 @@ void GameWorld::setUpTiles() {
                 isPassable = true;
             }
 
-            // Set exit flag for top-left corner
-            if (i == 0 && j == 0) {
-                isExit = true;
-            }
 
             // Create tile and assign to array
-            tiles[i][j] = new GameTile(imagePath, j * 64, i * 64, isPassable, isExit);
+            tiles[i][j] = new GameTile(imagePath, j * 64, i * 64, Vector2f(64.0f, 64.0f), isPassable);
             
         }
     }

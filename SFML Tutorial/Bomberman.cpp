@@ -80,9 +80,11 @@ int main()
                 if (!gameWorld.tiles[i][j]->isPassable) {
 
                     gameWorld.tiles[i][j]->GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+
                 }
 
                 window.draw(gameWorld.tiles[i][j]->sprite);
+                //gameWorld.tiles[i][j]->Draw(window);
             }
         }
 
