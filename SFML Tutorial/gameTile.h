@@ -15,11 +15,11 @@ public:
 	~GameTile();
 	Texture texture;
 	Sprite sprite;
-	
+
 	bool isPassable;
 	bool setUpSprite(string);
 	Vector2f pos;
-	Collider GetCollider()	{
+	Collider GetCollider() {
 		return Collider(body);
 	}
 

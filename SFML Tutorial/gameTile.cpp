@@ -6,7 +6,7 @@ using namespace sf;
 
 
 GameTile::GameTile(string textureName, float x, float y, Vector2f size, bool passable) {
-	
+
 	if (!setUpSprite(textureName)) {
 		return;
 	}
@@ -14,7 +14,7 @@ GameTile::GameTile(string textureName, float x, float y, Vector2f size, bool pas
 	isPassable = passable;
 	sprite.setPosition(pos);
 	body.setSize(size);
-	
+
 	body.setPosition(pos);
 }
 
@@ -32,6 +32,6 @@ bool GameTile::setUpSprite(string textureName) {
 
 	sprite.setTexture(texture);
 	sprite.setTextureRect(IntRect(0, 0, 20, 16));
-	sprite.setScale(4.0f,4.0f);
+	sprite.setScale(4.0f, 4.0f);
 	return true;
 }

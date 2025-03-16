@@ -9,14 +9,14 @@
 using namespace sf;
 using namespace std;
 
-class Map 
+class Map
 {
 public:
     Map(Texture* texture, int w, int h); // Constructor
     ~Map();
     void Clear();
     void Generate(Texture* texture, int x, int y); // Generate a random map
-    
+
     sf::Vector2f getOrigin();
     sf::Vector2f mapSize = sf::Vector2f(9.0f, 9.0f);
     sf::Vector2f start = sf::Vector2f(0.0f, 0.0f);

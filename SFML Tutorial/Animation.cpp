@@ -13,10 +13,7 @@ Animation::Animation(Texture* texture, Vector2u imageCount, float switchTime)
 	uvRect.height = texture->getSize().y / float(imageCount.y);
 }
 
-Animation::~Animation()
-{
-
-}
+Animation::~Animation() {}
 
 void Animation::Update(int row, float deltaTime, bool faceRight)
 {
@@ -42,4 +39,8 @@ void Animation::Update(int row, float deltaTime, bool faceRight)
 		uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
 		uvRect.width = -abs(uvRect.width);
 	}
+}
+
+Vector2u Animation::getImageCount() const {
+	return imageCount;
 }

@@ -10,7 +10,7 @@ public:
 	~Platform();
 
 	void Draw(RenderWindow& window);
-	Collider GetCollider() 
+	Collider GetCollider()
 	{
 		return Collider(body);
 	}
@@ -18,4 +18,3 @@ public:
 private:
 	RectangleShape body;
 };
-

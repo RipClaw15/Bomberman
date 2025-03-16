@@ -12,9 +12,9 @@ public:
 
 	void Update(int row, float deltaTime, bool faceRight);
 
-public:
-	IntRect uvRect;
 
+	IntRect uvRect;
+	Vector2u getImageCount() const;
 private:
 
 	Vector2u imageCount;
@@ -26,4 +26,3 @@ private:
 
 
 };
-

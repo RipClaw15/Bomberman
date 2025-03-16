@@ -15,9 +15,9 @@ public:
 	void Update(float deltaTime);
 	void Draw(RenderWindow& window);
 
-	Vector2f GetPosition() 
-	{ 
-		return body.getPosition(); 
+	Vector2f GetPosition()
+	{
+		return body.getPosition();
 	}
 
 	Collider GetCollider() { return Collider(body); }
@@ -29,4 +29,3 @@ private:
 	float speed;
 	bool faceRight;
 };
-

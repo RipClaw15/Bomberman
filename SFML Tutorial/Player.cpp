@@ -10,11 +10,11 @@ Player::Player(Texture* texture, Vector2u imageCount, float switchTime, float sp
 	row = 0;
 	faceRight = true;
 
-	body.setSize(Vector2f(50.0f, 50.0f));
-	
-	
-	body.setPosition(96.0f, 96.0f);
-	
+	body.setSize(Vector2f(60.0f, 60.0f));
+
+
+	body.setPosition(90.0f, 90.0f);
+
 	body.setTexture(texture);
 }
 
@@ -58,4 +58,3 @@ void Player::Draw(RenderWindow& window)
 {
 	window.draw(body);
 }
-

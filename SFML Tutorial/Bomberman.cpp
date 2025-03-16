@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "gameTile.h"
 #include "gameWorld.h"
+#include "Bomb.h"
 
 using namespace std;
 using namespace sf;
@@ -23,18 +24,21 @@ int main()
     RenderWindow window(VideoMode(1600, 1024), "SFML Tutorial", Style::Close | Style::Resize);
     View view(Vector2f(0.0f, 0.0f), Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     
-    Texture playerTexture;
+    Texture playerTexture, bombTexture, explosionTexture;
     playerTexture.loadFromFile("images/green_alien.png");
-
-
+    bombTexture.loadFromFile("images/bomb12.png");
+    explosionTexture.loadFromFile("images/bomb.png");
     Player player (&playerTexture, Vector2u(11,1), 0.3f, 200.0f);
 
+    Bomb* bomb = nullptr;
+
+    Vector2u bombImageCount(3, 1); // Example: 3 frames in the animation
+    float bombSwitchTime = 0.2f; // Time to switch between frames
     
     GameWorld gameWorld = GameWorld();
 
-    Platform platform1(nullptr, Vector2f(64.0f, 64.0f), Vector2f(500.0f, 200.0f));
+    //Platform platform1(nullptr, Vector2f(64.0f, 64.0f), Vector2f(150.0f, 150.0f));
 
-    
 
     /*
     Vector2u textureSize = playerTexture.getSize();
@@ -48,6 +52,8 @@ int main()
 
     float deltaTime = 0.0f;
     Clock clock;
+
+    bool spaceWasPressed = false;
 
     while (window.isOpen())
     {
@@ -71,26 +77,56 @@ int main()
 
         player.Update(deltaTime);
 
+        // Check if spacebar is pressed
+        bool spaceIsPressed = Keyboard::isKeyPressed(Keyboard::Space);
+        if (spaceIsPressed && !spaceWasPressed) {
+            if (bomb == nullptr) {
+                // Get the player's position and align it to the nearest grid cell
+                Vector2f playerPosition = player.GetPosition();
+                Vector2f gridPosition(
+                    static_cast<int>((playerPosition.x + 32) / 64) * 64,
+                    static_cast<int>((playerPosition.y + 32) / 64) * 64
+                );
+                // Spawn a bomb at the grid-aligned position
+                bomb = new Bomb(&bombTexture, &explosionTexture, gridPosition, bombImageCount, bombSwitchTime);
+                cout << "Bomb spawned at (" << gridPosition.x << ", " << gridPosition.y << ")\n";
+            }
+        }
+        spaceWasPressed = spaceIsPressed;
 
-        window.clear(Color(150, 150, 150));
-
-        int i, j;
-        for (i = 0; i < gameWorld.gridHeight; i++) {
-            for (j = 0; j < gameWorld.gridLength; j++) {
-                if (!gameWorld.tiles[i][j]->isPassable) {
-
-                    gameWorld.tiles[i][j]->GetCollider().CheckCollision(player.GetCollider(), 1.0f);
-
-                }
-
-                window.draw(gameWorld.tiles[i][j]->sprite);
-                //gameWorld.tiles[i][j]->Draw(window);
+        // Update the bomb if it exists
+        if (bomb != nullptr) {
+            bomb->update(deltaTime);
+            if (bomb->hasExploded()) {
+                delete bomb;
+                bomb = nullptr;
+                std::cout << "Bomb deleted.\n"; // Debug statement
             }
         }
 
+        window.clear(Color(150, 150, 150));
+
+        // Draw the game world
+        for (int i = 0; i < gameWorld.gridHeight; i++) {
+            for (int j = 0; j < gameWorld.gridLength; j++) {
+                if (!gameWorld.tiles[i][j]->isPassable) {
+                    gameWorld.tiles[i][j]->GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+                }
+                window.draw(gameWorld.tiles[i][j]->sprite);
+            }
+        }
+
+        // Draw the player and bomb
         player.Draw(window);
+        if (bomb != nullptr) {
+            bomb->Draw(window);
+        }
+
         window.display();
     }
+
+    // Clean up dynamically allocated bomb if it exists
+    delete bomb;
     
     return 0;
 }
