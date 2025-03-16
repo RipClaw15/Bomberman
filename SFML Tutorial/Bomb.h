@@ -10,38 +10,34 @@
 #include <SFML/Graphics.hpp>
 #include "Collider.h"
 #include "Animation.h"
+#include "Fire.h"
 
 using namespace std;
 using namespace sf;
 
-class Bomb
-{
+class Bomb {
 public:
-	Bomb(Texture* texture, Texture* explosionTexture, Vector2f position, Vector2u imageCount, float switchTime);
-	~Bomb();
+    Bomb(Texture* texture, Texture* explosionTexture, Texture* fireTexture, Vector2f position, Vector2u imageCount, float switchTime);
+    ~Bomb();
 
-	void Draw(RenderWindow& window);
-	Collider GetCollider()
-	{
-		return Collider(body);
-	}
+    void Draw(RenderWindow& window);
+    Collider GetCollider() { return Collider(body); }
 
-	void update(float deltaTime);
-
-	void printStatus() const;
-
-	bool hasExploded() const;
-
+    void update(float deltaTime);
+    void printStatus() const;
+    bool hasExploded() const;
 
 private:
-	RectangleShape body;
-	Texture bombTexture;
-	Texture explosionTexture;
-	Animation animation;
-	std::chrono::steady_clock::time_point startTime;
-	const int duration = 3; // Duration in seconds
-	bool isExploding = false;
-	bool hasExplodedFlag = false;
+    RectangleShape body;
+    Texture bombTexture;
+    Texture explosionTexture;
+    Texture* fireTexture; // Pointer to fire texture
+    Animation animation;
+    std::chrono::steady_clock::time_point startTime;
+    const int duration = 3; // Duration in seconds
+    bool isExploding = false;
+    bool hasExplodedFlag = false;
+    Fire* fire; // Pointer to Fire object
 };
 
 #endif // BOMB_H

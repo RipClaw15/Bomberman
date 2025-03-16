@@ -137,6 +137,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="gameTile.cpp" />
     <ClCompile Include="gameWorld.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="gameTile.h" />
     <ClInclude Include="gameWorld.h" />
     <ClInclude Include="Map.h" />

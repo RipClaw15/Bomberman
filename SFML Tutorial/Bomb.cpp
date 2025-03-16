@@ -1,18 +1,23 @@
 #include "Bomb.h"
 
-Bomb::Bomb(Texture* texture, Texture* explosionTexture, Vector2f position, Vector2u imageCount, float switchTime)
-    : bombTexture(*texture), explosionTexture(*explosionTexture), animation(texture, imageCount, switchTime), startTime(std::chrono::steady_clock::now()) {
+Bomb::Bomb(Texture* texture, Texture* explosionTexture, Texture* fireTexture, Vector2f position, Vector2u imageCount, float switchTime)
+    : bombTexture(*texture), explosionTexture(*explosionTexture), fireTexture(fireTexture), animation(texture, imageCount, switchTime), startTime(std::chrono::steady_clock::now()), fire(nullptr) {
     body.setSize(Vector2f(64.0f, 64.0f));
     body.setOrigin(Vector2f(0.0f, 0.0f));
     body.setTexture(&bombTexture);
     body.setPosition(position);
 }
 
-Bomb::~Bomb() {}
+Bomb::~Bomb() {
+    delete fire; // Clean up Fire object if it exists
+}
 
 void Bomb::Draw(RenderWindow& window) {
     body.setTextureRect(animation.uvRect);
     window.draw(body);
+    if (fire != nullptr) {
+        fire->draw(window);
+    }
 }
 
 void Bomb::update(float deltaTime) {
@@ -23,6 +28,7 @@ void Bomb::update(float deltaTime) {
         isExploding = true;
         body.setTexture(&explosionTexture);
         animation = Animation(&explosionTexture, Vector2u(3, 1), 0.1f); // Example: 3 frames for explosion
+        fire = new Fire(fireTexture, body.getPosition()); // Initialize Fire object
     }
 
     if (isExploding) {
@@ -30,10 +36,14 @@ void Bomb::update(float deltaTime) {
         animation.Update(0, deltaTime, true);
         body.setTextureRect(animation.uvRect);
 
+        // Update fire particles
+        if (fire != nullptr) {
+            fire->update(deltaTime);
+        }
+
         // Check if the explosion animation is complete
         if (animation.uvRect.left >= (animation.getImageCount().x - 1) * animation.uvRect.width) {
             hasExplodedFlag = true;
-            std::cout << "Explosion animation complete.\n"; // Debug statement
         }
     }
     else {

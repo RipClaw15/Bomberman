@@ -12,59 +12,41 @@ using namespace sf;
 
 static const float VIEW_HEIGHT = 1024.0f;
 
-void ResizeView(const RenderWindow& window, View& view)
-{
+void ResizeView(const RenderWindow& window, View& view) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
-
     view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
 
-int main()
-{
+int main() {
     RenderWindow window(VideoMode(1600, 1024), "SFML Tutorial", Style::Close | Style::Resize);
     View view(Vector2f(0.0f, 0.0f), Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
-    
-    Texture playerTexture, bombTexture, explosionTexture;
+
+    Texture playerTexture, bombTexture, explosionTexture, fireTexture;
     playerTexture.loadFromFile("images/green_alien.png");
     bombTexture.loadFromFile("images/bomb12.png");
     explosionTexture.loadFromFile("images/bomb.png");
-    Player player (&playerTexture, Vector2u(11,1), 0.3f, 200.0f);
+    fireTexture.loadFromFile("images/fire.png"); // Load fire texture
+
+    Player player(&playerTexture, Vector2u(11, 1), 0.3f, 200.0f);
 
     Bomb* bomb = nullptr;
 
     Vector2u bombImageCount(3, 1); // Example: 3 frames in the animation
     float bombSwitchTime = 0.2f; // Time to switch between frames
-    
+
     GameWorld gameWorld = GameWorld();
-
-    //Platform platform1(nullptr, Vector2f(64.0f, 64.0f), Vector2f(150.0f, 150.0f));
-
-
-    /*
-    Vector2u textureSize = playerTexture.getSize();
-
-    textureSize.x /= 11;
-
-    player.setTextureRect(IntRect(textureSize.x * 0, 0, textureSize.x, textureSize.y));
-    */
-
-    
 
     float deltaTime = 0.0f;
     Clock clock;
 
     bool spaceWasPressed = false;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
 
         Event evnt;
-
-        while (window.pollEvent(evnt))
-        {
-            switch (evnt.type)
-            {
+        while (window.pollEvent(evnt)) {
+            switch (evnt.type) {
             case Event::Closed:
                 window.close();
                 break;
@@ -73,7 +55,6 @@ int main()
                 break;
             }
         }
-
 
         player.Update(deltaTime);
 
@@ -88,7 +69,7 @@ int main()
                     static_cast<int>((playerPosition.y + 32) / 64) * 64
                 );
                 // Spawn a bomb at the grid-aligned position
-                bomb = new Bomb(&bombTexture, &explosionTexture, gridPosition, bombImageCount, bombSwitchTime);
+                bomb = new Bomb(&bombTexture, &explosionTexture, &fireTexture, gridPosition, bombImageCount, bombSwitchTime);
                 cout << "Bomb spawned at (" << gridPosition.x << ", " << gridPosition.y << ")\n";
             }
         }
@@ -127,6 +108,6 @@ int main()
 
     // Clean up dynamically allocated bomb if it exists
     delete bomb;
-    
+
     return 0;
 }
